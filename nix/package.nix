@@ -67,7 +67,8 @@ stdenv.mkDerivation {
 
     makeWrapper "$out/bin/.excalibur-control-center-gui-unwrapped" \
       "$out/bin/excalibur-control-center-gui" \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath runtimeLibs}
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath runtimeLibs} \
+      --prefix LD_LIBRARY_PATH : /run/opengl-driver/lib
 
     runHook postInstall
   '';
