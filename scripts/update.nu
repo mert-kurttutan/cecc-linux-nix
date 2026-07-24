@@ -71,7 +71,7 @@ def set-package-asset-hash [content: string, asset_name: string, hash: string] {
 }
 
 def set-module-source-hash [content: string, hash: string] {
-  let pattern = '(?s)(ceccSource = pkgs\.fetchurl \{\n\s+url = "https://github\.com/mert-kurttutan/cecc-linux/archive/refs/tags/v\$\{version\}\.tar\.gz";\n\s+sha256 = ")[^"]+(";)'
+  let pattern = '(?s)(ceccSource = pkgs\.fetchzip \{\n\s+url = "https://github\.com/mert-kurttutan/cecc-linux/archive/refs/tags/v\$\{version\}\.tar\.gz";\n\s+sha256 = ")[^"]+(";)'
   let replacement = ('${1}' + $hash + '${2}')
   $content | str replace -r $pattern $replacement
 }
@@ -161,7 +161,7 @@ def main [
   log-info $"Current version: ($current_version)"
   log-info $"Latest version: ($latest_version)"
 
-  if $current_version == $latest_version {
+  if $current_version == $latest_version and ($version | is-empty) {
     log-info "Already up to date!"
     exit 0
   }

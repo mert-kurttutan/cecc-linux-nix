@@ -9,32 +9,19 @@ let
   cfg = config.services.excalibur-control-center;
 
   version = "0.1.23";
-  ceccSource = pkgs.fetchurl {
+  ceccSource = pkgs.fetchzip {
     url = "https://github.com/mert-kurttutan/cecc-linux/archive/refs/tags/v${version}.tar.gz";
     sha256 = "00h47ykcjs08i5kzc1cdp0v4vdj9r3xxgafwasywx9lh8q1b0sda";
   };
 
-  ceccSourceUnpacked = pkgs.stdenvNoCC.mkDerivation {
-    pname = "cecc-linux-source";
-    inherit version;
-    src = ceccSource;
-
-    installPhase = ''
-      runHook preInstall
-      mkdir -p "$out"
-      cp -R . "$out"
-      runHook postInstall
-    '';
-  };
-
   casperWmi = config.boot.kernelPackages.callPackage ./casper-wmi.nix {
-    src = ceccSourceUnpacked + "/casper-wmi";
+    src = ceccSource + "/casper-wmi";
   };
 
   excaliburControlCenter = pkgs.callPackage ./package.nix { };
 
   applySysfsPermissions = pkgs.writeShellScript "excalibur-apply-sysfs-permissions" ''
-    exec ${pkgs.bash}/bin/bash ${ceccSourceUnpacked}/scripts/driver-bash/apply-sysfs-permissions.sh "$@"
+    exec ${pkgs.bash}/bin/bash ${ceccSource}/scripts/driver-bash/apply-sysfs-permissions.sh "$@"
   '';
 in
 {
