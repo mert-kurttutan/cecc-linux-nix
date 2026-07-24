@@ -10,17 +10,17 @@
 }:
 
 let
-  version = "0.1.23";
+  version = "0.1.29";
 
   releases = {
     x86_64-linux = {
       gui = {
         asset = "excalibur-control-center-gui";
-        sha256 = "07v6qsgv5mnw3vkh4v6makpj99ni3h0rspl5psj3q4b5663qdl8g";
+        sha256 = "1x8i9gx207m9ykpssl9a3ccpyswi11ysl74i8x4b7yl1f27c98gh";
       };
       cli = {
         asset = "excalibur-control-center-cli";
-        sha256 = "0p251zbj4mnpj3r5d7rv31iakpqipg0xgd152dwpdcah7dir5r33";
+        sha256 = "0h1rc2i5jqd5hqhw336ni07bqb0fpzsdy31gkpmi84jpj8ggj8r1";
       };
     };
   };
