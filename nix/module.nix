@@ -64,6 +64,7 @@ in
     services.udev.extraRules = ''
       ACTION=="add|change", SUBSYSTEM=="leds", KERNEL=="casper:rgb:*", RUN+="${applySysfsPermissions} leds %k"
       ACTION=="add|change", SUBSYSTEM=="module", KERNEL=="casper_wmi", RUN+="${applySysfsPermissions} module"
+      ACTION=="add|change", SUBSYSTEM=="module", KERNEL=="casper_wmi", RUN+="${applySysfsPermissions} platform"
     '';
   };
 }
