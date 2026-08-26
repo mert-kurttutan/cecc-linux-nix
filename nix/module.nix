@@ -8,10 +8,10 @@
 let
   cfg = config.services.excalibur-control-center;
 
-  version = "0.1.33";
+  version = "0.1.34";
   ceccSource = pkgs.fetchzip {
     url = "https://github.com/mert-kurttutan/cecc-linux/archive/refs/tags/v${version}.tar.gz";
-    sha256 = "0fqlk3lma6pkrym7vng1s3ymzgdwdxsvwqf2ki52g233k1vf83gr";
+    sha256 = "1vag4n40mk06krkd0rhggzz62dfmw6lmazhc91lzm90cs0pdpgw4";
   };
 
   casperWmi = config.boot.kernelPackages.callPackage ./casper-wmi.nix {
