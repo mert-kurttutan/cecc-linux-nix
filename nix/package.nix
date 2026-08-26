@@ -2,15 +2,19 @@
   lib,
   stdenv,
   autoPatchelfHook,
+  copyDesktopItems,
+  fetchzip,
   fetchurl,
   fontconfig,
   libxkbcommon,
+  makeDesktopItem,
   makeWrapper,
   wayland,
 }:
 
 let
   version = "0.1.32";
+  sourceSha256 = "0n0knndlscmmq6qg817l3gv616wiw9ra5y58cdqr3481izs0a9h2";
 
   releases = {
     x86_64-linux = {
@@ -39,6 +43,36 @@ let
     inherit (release.cli) sha256;
   };
 
+  ceccSource = fetchzip {
+    url = "https://github.com/mert-kurttutan/cecc-linux/archive/refs/tags/v${version}.tar.gz";
+    sha256 = sourceSha256;
+  };
+
+  desktopItem = makeDesktopItem {
+    name = "excalibur-control-center";
+    desktopName = "Excalibur Control Center";
+    genericName = "Hardware Control Center";
+    comment = "Control Casper Excalibur laptop performance, GPU mode, and keyboard lighting";
+    exec = "excalibur-control-center-gui";
+    icon = "excalibur-control-center";
+    terminal = false;
+    categories = [
+      "Settings"
+      "HardwareSettings"
+      "System"
+    ];
+    keywords = [
+      "excalibur"
+      "casper"
+      "keyboard"
+      "rgb"
+      "fan"
+      "gpu"
+      "performance"
+    ];
+    startupNotify = true;
+  };
+
   runtimeLibs = [
     fontconfig
     libxkbcommon
@@ -54,10 +88,15 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [
     autoPatchelfHook
+    copyDesktopItems
     makeWrapper
   ];
 
   buildInputs = runtimeLibs;
+
+  desktopItems = [
+    desktopItem
+  ];
 
   installPhase = ''
     runHook preInstall
@@ -69,6 +108,11 @@ stdenv.mkDerivation {
       "$out/bin/excalibur-control-center-gui" \
       --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath runtimeLibs} \
       --prefix LD_LIBRARY_PATH : /run/opengl-driver/lib
+
+    if [ -r "${ceccSource}/packaging/excalibur-control-center.svg" ]; then
+      install -Dm644 "${ceccSource}/packaging/excalibur-control-center.svg" \
+        "$out/share/icons/hicolor/scalable/apps/excalibur-control-center.svg"
+    fi
 
     runHook postInstall
   '';

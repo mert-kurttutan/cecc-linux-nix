@@ -76,6 +76,12 @@ def set-module-source-hash [content: string, hash: string] {
   $content | str replace -r $pattern $replacement
 }
 
+def set-package-source-hash [content: string, hash: string] {
+  let pattern = '(sourceSha256 = ")[^"]+(";)'
+  let replacement = ('${1}' + $hash + '${2}')
+  $content | str replace -r $pattern $replacement
+}
+
 def update-to-version [new_version: string] {
   log-info $"Updating to version ($new_version)..."
 
@@ -105,6 +111,7 @@ def update-to-version [new_version: string] {
 
   $updated_package = set-package-asset-hash $updated_package $GUI_ASSET $gui_hash
   $updated_package = set-package-asset-hash $updated_package $CLI_ASSET $cli_hash
+  $updated_package = set-package-source-hash $updated_package $source_hash
   $updated_module = set-module-source-hash $updated_module $source_hash
 
   $updated_package | save --force nix/package.nix
