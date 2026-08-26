@@ -70,7 +70,7 @@ let
       "gpu"
       "performance"
     ];
-    startupNotify = true;
+    startupNotify = false;
   };
 
   runtimeLibs = [
