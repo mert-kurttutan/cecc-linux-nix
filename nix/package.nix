@@ -13,18 +13,18 @@
 }:
 
 let
-  version = "0.1.32";
-  sourceSha256 = "0n0knndlscmmq6qg817l3gv616wiw9ra5y58cdqr3481izs0a9h2";
+  version = "0.1.33";
+  sourceSha256 = "0fqlk3lma6pkrym7vng1s3ymzgdwdxsvwqf2ki52g233k1vf83gr";
 
   releases = {
     x86_64-linux = {
       gui = {
         asset = "excalibur-control-center-gui";
-        sha256 = "0ma6qpf3520zdzlm4djw5h4lqf984vhmg9d9lqk0dw78g6dy23al";
+        sha256 = "115i6nd3i99vbqyrwkgqw0xpjh78a5yviprva7avc2w2x7rpb2zq";
       };
       cli = {
         asset = "excalibur-control-center-cli";
-        sha256 = "1rk10cxd1kaf0gdaq1m1d0zj5cfcdg73ywva2lw6hww4s3q1v1vq";
+        sha256 = "1lsa9gx7mf94r7xzzsmd1m6129jnfrpjlnhncdafh0fgq58i66xn";
       };
     };
   };
