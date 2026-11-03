@@ -11,12 +11,7 @@ stdenv.mkDerivation {
 
   inherit src;
 
-  # This driver is C-only. Nixpkgs adds Rust tools to the generic kernel
-  # module dependencies when the kernel enables Rust, but this module does
-  # not invoke bindgen.
-  nativeBuildInputs = builtins.filter
-    (dependency: lib.getName dependency != "rust-bindgen-unwrapped")
-    kernel.moduleBuildDependencies;
+  nativeBuildInputs = kernel.moduleBuildDependencies;
 
   buildPhase = ''
     runHook preBuild
