@@ -8,18 +8,18 @@
 }:
 
 let
-  version = "0.1.39";
-  sourceSha256 = "15cp74qrzspbczhp6dfjv6figz2gkxpwprjlq2s0jkvfh08xdqlj";
+  version = "0.1.40";
+  sourceSha256 = "0xzl5qf5998hq4viyv8hd8bhaskhzmrc1zx5626scxcraxalh2bs";
 
   releases = {
     x86_64-linux = {
       gui = {
         asset = "excalibur-control-center-gui";
-        sha256 = "1ivzs8wzi0kgjl5vhnqs6krn2nnsncgmybf4vlfndjnzmrn5bvqc";
+        sha256 = "14drv3lyllbfisir7s9x5lgjc1nbkw0p8gm519j5mr11ylg0a30v";
       };
       cli = {
         asset = "excalibur-control-center-cli";
-        sha256 = "0kqgd6jxdc2b0amp6mlyfgb1y18ib9xf2sr2i8dx5g713x621bz4";
+        sha256 = "1mxddwivy17khydzz2rxfbfq8vih2jmp2iy3r7zx3dfbr13fh1j9";
       };
     };
   };
