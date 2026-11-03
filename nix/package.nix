@@ -1,10 +1,15 @@
 {
   lib,
-  stdenvNoCC,
+  stdenv,
+  autoPatchelfHook,
   copyDesktopItems,
   fetchzip,
   fetchurl,
+  fontconfig,
+  libxkbcommon,
   makeDesktopItem,
+  makeWrapper,
+  wayland,
 }:
 
 let
@@ -25,8 +30,8 @@ let
   };
 
   release =
-    releases.${stdenvNoCC.hostPlatform.system}
-      or (throw "Unsupported system: ${stdenvNoCC.hostPlatform.system}");
+    releases.${stdenv.hostPlatform.system}
+      or (throw "Unsupported system: ${stdenv.hostPlatform.system}");
 
   guiSrc = fetchurl {
     url = "https://github.com/mert-kurttutan/cecc-linux/releases/download/v${version}/${release.gui.asset}";
@@ -67,16 +72,27 @@ let
     ];
     startupNotify = false;
   };
+
+  runtimeLibs = [
+    fontconfig
+    libxkbcommon
+    stdenv.cc.cc.lib
+    wayland
+  ];
 in
-stdenvNoCC.mkDerivation {
+stdenv.mkDerivation {
   pname = "excalibur-control-center";
   inherit version;
 
   dontUnpack = true;
 
   nativeBuildInputs = [
+    autoPatchelfHook
     copyDesktopItems
+    makeWrapper
   ];
+
+  buildInputs = runtimeLibs;
 
   desktopItems = [
     desktopItem
@@ -85,8 +101,13 @@ stdenvNoCC.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    install -Dm755 ${guiSrc} "$out/bin/excalibur-control-center-gui"
+    install -Dm755 ${guiSrc} "$out/bin/.excalibur-control-center-gui-unwrapped"
     install -Dm755 ${cliSrc} "$out/bin/excalibur-control-center-cli"
+
+    makeWrapper "$out/bin/.excalibur-control-center-gui-unwrapped" \
+      "$out/bin/excalibur-control-center-gui" \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath runtimeLibs} \
+      --prefix LD_LIBRARY_PATH : /run/opengl-driver/lib
 
     if [ -r "${ceccSource}/packaging/excalibur-control-center.svg" ]; then
       install -Dm644 "${ceccSource}/packaging/excalibur-control-center.svg" \
